@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+
+  api-facilita:
+    container_name: 'api-facilita'
+    restart: unless-stopped
+    build:
+      context: facilita-backend
+    ports:
+      - '3000:3000'
+    depends_on:
+      - database-facilita
+
+    env_file:
+      - .facilita-backend.env
+
+  database-facilita:
+    image: postgres
+    restart: unless-stopped
+    container_name: 'database-facilita'
+    environment:
+      - POSTGRES_DB=facilita-database
+      - POSTGRES_USER=facilita-admin
+      - POSTGRES_PASSWORD=password123
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./database/data:/var/lib/postgresql/data
